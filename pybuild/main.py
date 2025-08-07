@@ -13,23 +13,23 @@ except:
     import pybuild.git
     import pybuild.gradle
 
-# git.init_credentials("github-actions", "github-actions@github.com")
-# os.remove("README.md")
-# git.checkout("versioning", "orphan")
-# git.reset()
-# git.pull(branch_name="versioning")
-#
-#
-# def findPhase(ver):
-#     if "-a" in ver: return "alpha"
-#     if "-b" in ver: return "beta"
-#     if "-rc" in ver: return "release-candidate"
-#     return "release"
-#
-# repoUrl = f"https://github.com/{os.getenv("GITHUB_REPO")}"
-#
-# version = (os.getenv("GITHUB_REF") or "refs/tags/0.0.0-alpha").replace("refs/tags/", "")
-# phase = findPhase(version)
+git.init_credentials("github-actions", "github-actions@github.com")
+os.remove("README.md")
+git.checkout("versioning", "orphan")
+git.reset()
+git.pull(branch_name="versioning")
+
+
+def findPhase(ver):
+    if "-a" in ver: return "alpha"
+    if "-b" in ver: return "beta"
+    if "-rc" in ver: return "release-candidate"
+    return "release"
+
+repoUrl = f"https://github.com/{os.getenv("GITHUB_REPO")}"
+
+version = (os.getenv("GITHUB_REF") or "refs/tags/0.0.0-alpha").replace("refs/tags/", "")
+phase = findPhase(version)
 
 version = "1.1.1-alpha"
 
@@ -45,41 +45,41 @@ f1 = open(f"mock-launcher-{version}.jar", "xb")
 f1.write(f0.read())
 f1.close()
 f0.close()
-#
-# if not os.path.exists("versions.json"):
-#     f = open("versions.json", "x")
-#     f.write("""{
-# 	"latest": {},
-# 	"existing-phases": [],
-# 	"versions": {}
-# }""")
-#     f.close()
-#
-# f = open("versions.json", "r")
-# contents = f.read()
-# f.close()
-#
-# contents = json.loads(contents)
-#
-# contents["latest"]["*"] = version
-# contents["latest"][phase] = version
-#
-# if not phase in contents["existing-phases"]:
-#     contents["existing-phases"].append(phase)
-#
-# contents["versions"][version] = {
-#     "epoch": int(time.time()),
-#     "date": datetime.datetime.now().astimezone(datetime.timezone.utc).strftime("%Y/%m/%dT%H:%M:%S"),
-#     "id": version,
-#     "phase": phase
-# }
-#
-# contents["versions"][version]["download"] = f"{repoUrl}/releases/download/{version}/mock-launcher-{version}.jar"
-# subprocess.call(args=["gh", "release", "upload", version, f"./mock-launcher-{version}.jar;"])
-#
-# f = open("versions.json", "w")
-# f.write(json.dumps(contents, indent="\t"))
-# f.close()
-#
-# git.commit(f"add {version} to version manifest", "versions.json")
-# git.push(branch_name="versioning")
+
+if not os.path.exists("versions.json"):
+    f = open("versions.json", "x")
+    f.write("""{
+	"latest": {},
+	"existing-phases": [],
+	"versions": {}
+}""")
+    f.close()
+
+f = open("versions.json", "r")
+contents = f.read()
+f.close()
+
+contents = json.loads(contents)
+
+contents["latest"]["*"] = version
+contents["latest"][phase] = version
+
+if not phase in contents["existing-phases"]:
+    contents["existing-phases"].append(phase)
+
+contents["versions"][version] = {
+    "epoch": int(time.time()),
+    "date": datetime.datetime.now().astimezone(datetime.timezone.utc).strftime("%Y/%m/%dT%H:%M:%S"),
+    "id": version,
+    "phase": phase
+}
+
+contents["versions"][version]["download"] = f"{repoUrl}/releases/download/{version}/mock-launcher-{version}.jar"
+subprocess.call(args=["gh", "release", "upload", version, f"./mock-launcher-{version}.jar;"])
+
+f = open("versions.json", "w")
+f.write(json.dumps(contents, indent="\t"))
+f.close()
+
+git.commit(f"add {version} to version manifest", "versions.json")
+git.push(branch_name="versioning")
