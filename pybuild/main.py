@@ -36,8 +36,8 @@ f2.write("""org.gradle.jvmargs=-Xmx4608M
 p_version = 0.0.0-alpha""")
 f2.close()
 
-f0 = open("build/libs/mock-launcher-1.0-SNAPSHOT-all.jar", "r")
-f1 = open(f"mock-launcher-{version}.jar", "x")
+f0 = open("build/libs/mock-launcher-1.0-SNAPSHOT-all.jar", "rb")
+f1 = open(f"mock-launcher-{version}.jar", "xb")
 f1.write(f0.read())
 f1.close()
 f0.close()
