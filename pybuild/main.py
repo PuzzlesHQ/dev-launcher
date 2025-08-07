@@ -14,11 +14,11 @@ except:
     import pybuild.gradle
 
 git.init_credentials("github-actions", "github-actions@github.com")
+os.remove("README.md")
 git.checkout("versioning", "orphan")
 git.reset()
 git.pull(branch_name="versioning")
 
-os.remove("READMD.md")
 
 def findPhase(ver):
     if "-a" in ver: return "alpha"
