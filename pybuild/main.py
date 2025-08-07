@@ -75,7 +75,7 @@ contents["versions"][version] = {
 }
 
 contents["versions"][version]["download"] = f"{repoUrl}/releases/download/{version}/mock-launcher-{version}.jar"
-subprocess.call(args=["gh", "release", "upload", version, f"./mock-launcher-{version}.jar;"])
+subprocess.call(args=["gh", "release", "upload", version, f"./mock-launcher-{version}.jar"])
 
 f = open("versions.json", "w")
 f.write(json.dumps(contents, indent="\t"))
