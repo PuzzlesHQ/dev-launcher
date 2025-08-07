@@ -16,6 +16,7 @@ except:
 git.init_credentials("github-actions", "github-actions@github.com")
 git.checkout("versioning", "orphan")
 git.reset()
+git.pull(branch_name="versioning")
 
 def findPhase(ver):
     if "-a" in ver: return "alpha"
