@@ -4,10 +4,16 @@ plugins {
 }
 
 group = 'dev.puzzleshq'
-version = '1.0-SNAPSHOT'
+version = p_version
 
 repositories {
     mavenCentral()
+}
+
+shadowJar {
+    manifest {
+        attributes("Main-Class": "dev.puzzleshq.devlauncher.Main")
+    }
 }
 
 dependencies {

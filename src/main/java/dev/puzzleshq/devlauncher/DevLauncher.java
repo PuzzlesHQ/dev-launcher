@@ -22,6 +22,7 @@ public class DevLauncher extends JFrame {
 
         setSize(400, 150);
         setResizable(false);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         initPanel();
 
@@ -67,25 +68,31 @@ public class DevLauncher extends JFrame {
                 File gFolder = new File("../../.cosmic-reach/" + gameVersions.getSelectedItem());
                 if (!gFolder.exists()) gFolder.mkdirs();
 
-                try {
-                    new File(Main.base, "log.txt").createNewFile();
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
-                }
-
                 Thread thread = new Thread(() -> {
                     ProcessBuilder builder = new ProcessBuilder("java", "-cp", "\"" + "lib/*" + File.pathSeparator + gFolder + "/game.jar" + "\"", "dev.puzzleshq.puzzleloader.loader.launch.pieces.ClientPiece");
                     builder.directory(vFolder);
-                    builder.redirectOutput();
-                    builder.redirectError();
+                    builder.redirectErrorStream(true);
+
+                    Process process;
                     try {
-                        builder.start();
+                        process = builder.start();
                     } catch (IOException ex) {
                         throw new RuntimeException(ex);
                     }
+
+                    InputStream err = process.getErrorStream();
+                    InputStream out = process.getInputStream();
+                    while (process.isAlive()) {
+                        try {
+                            err.readAllBytes();
+                            out.readAllBytes();
+                        } catch (IOException ex) {
+                            throw new RuntimeException(ex);
+                        }
+                    }
                 });
                 thread.setName("Cosmic Thread");
-                thread.setDaemon(false);
+                thread.setDaemon(true);
                 thread.start();
             }
         });
@@ -114,7 +121,7 @@ public class DevLauncher extends JFrame {
         try {
             if (!deps.exists()) deps.createNewFile();
 
-            JsonObject version = Main.gameManifestData.get("versions").asObject().get(versions.getSelectedItem().toString()).asObject();
+            JsonObject version = Main.puzzleManifestData.get("versions").asObject().get(versions.getSelectedItem().toString()).asObject();
             downloadMaven("https://repo1.maven.org/maven2/", version.get("maven-central").asString() + ":client", new File(vLib, "puzzle-loader-cosmic-"+versions.getSelectedItem().toString()+"-client.jar"));
 
             InputStream stream = new URL(version.get("dependencies").asString()).openStream();
