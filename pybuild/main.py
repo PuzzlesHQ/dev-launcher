@@ -31,7 +31,7 @@ repoUrl = f"https://github.com/{os.getenv("GITHUB_REPO")}"
 version = (os.getenv("GITHUB_REF") or "refs/tags/0.0.0-alpha").replace("refs/tags/", "")
 phase = findPhase(version)
 
-version = "1.1.1-alpha"
+# version = "1.1.1-alpha"
 
 f2 = open("gradle.properties", "w")
 f2.write(f"""org.gradle.jvmargs=-Xmx4608M
