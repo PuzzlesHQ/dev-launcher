@@ -14,11 +14,9 @@ except:
     import pybuild.gradle
 
 git.init_credentials("github-actions", "github-actions@github.com")
-os.remove("README.md")
 git.checkout("versioning", "orphan")
 git.reset()
 git.pull(branch_name="versioning")
-
 
 def findPhase(ver):
     if "-a" in ver: return "alpha"
@@ -41,7 +39,7 @@ f2.close()
 gradle.run("shadowJar")
 
 f0 = open(f"build/libs/mock-launcher-{version}-all.jar", "rb")
-f1 = open(f"mock-launcher-{version}.jar", "xb")
+f1 = open(f"dev-launcher-{version}.jar", "xb")
 f1.write(f0.read())
 f1.close()
 f0.close()
@@ -74,8 +72,8 @@ contents["versions"][version] = {
     "phase": phase
 }
 
-contents["versions"][version]["download"] = f"{repoUrl}/releases/download/{version}/mock-launcher-{version}.jar"
-subprocess.call(args=["gh", "release", "upload", version, f"./mock-launcher-{version}.jar"])
+contents["versions"][version]["download"] = f"{repoUrl}/releases/download/{version}/dev-launcher-{version}.jar"
+subprocess.call(args=["gh", "release", "upload", version, f"./dev-launcher-{version}.jar"])
 
 f = open("versions.json", "w")
 f.write(json.dumps(contents, indent="\t"))
