@@ -44,15 +44,6 @@ f1.write(f0.read())
 f1.close()
 f0.close()
 
-if not os.path.exists("versions.json"):
-    f = open("versions.json", "x")
-    f.write("""{
-	"latest": {},
-	"existing-phases": [],
-	"versions": {}
-}""")
-    f.close()
-
 f = open("versions.json", "r")
 contents = f.read()
 f.close()

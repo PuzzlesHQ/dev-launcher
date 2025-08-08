@@ -58,3 +58,7 @@ def pull(remote = "origin", branch_name = "main"):
 
 def push(remote = "origin", branch_name = "main"):
     subprocess.call(args=["git", "push", "-u", remote, branch_name])
+
+
+def stash():
+    subprocess.call(args=["git", "stash"])
