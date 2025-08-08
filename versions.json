@@ -1,5 +1,18 @@
 {
-	"latest": {},
-	"existing-phases": [],
-	"versions": {}
+	"latest": {
+		"*": "1.0.0-alpha",
+		"alpha": "1.0.0-alpha"
+	},
+	"existing-phases": [
+		"alpha"
+	],
+	"versions": {
+		"1.0.0-alpha": {
+			"epoch": 1754625876,
+			"date": "2025/08/08T04:04:36",
+			"id": "1.0.0-alpha",
+			"phase": "alpha",
+			"download": "https://github.com/PuzzlesHQ/dev-launcher/releases/download/1.0.0-alpha/dev-launcher-1.0.0-alpha.jar"
+		}
+	}
 }
