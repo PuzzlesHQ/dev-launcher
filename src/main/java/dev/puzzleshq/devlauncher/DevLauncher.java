@@ -69,7 +69,9 @@ public class DevLauncher extends JFrame {
                 if (!gFolder.exists()) gFolder.mkdirs();
 
                 Thread thread = new Thread(() -> {
+//                    ProcessBuilder builder = new ProcessBuilder("java", "-cp", "\"" + "lib/*" + File.pathSeparator + gFolder + "/game.jar" + "\"", "finalforeach.cosmicreach.lwjgl3.Lwjgl3Launcher");
                     ProcessBuilder builder = new ProcessBuilder("java", "-cp", "\"" + "lib/*" + File.pathSeparator + gFolder + "/game.jar" + "\"", "dev.puzzleshq.puzzleloader.loader.launch.pieces.ClientPiece");
+//                    ProcessBuilder builder = new ProcessBuilder("java", "-Dmixin.debug.export.decompile=true", "-Dmixin.debug.export.filter=**", "-Dmixin.debug=true", "-Dmixin.debug.profiler=true", "-Dmixin.debug.verify=true", "-Dmixin.debug.export=true", "-Dmixin.checks.interfaces=true", "-cp", "\"" + "lib/*" + File.pathSeparator + gFolder + "/game.jar" + "\"", "dev.puzzleshq.puzzleloader.loader.launch.pieces.ClientPiece", "--dump-transformed-classes=true", "--allow-class-overrides=true", "--join-world", "New-World");
                     builder.directory(vFolder);
                     builder.redirectErrorStream(true);
 
@@ -84,8 +86,10 @@ public class DevLauncher extends JFrame {
                     InputStream out = process.getInputStream();
                     while (process.isAlive()) {
                         try {
-                            err.readAllBytes();
-                            out.readAllBytes();
+                            System.out.write(out.readNBytes(1));
+                            System.err.write(err.readNBytes(1));
+//                            System.err.writeBytes(err.readAllBytes());
+//                            System.out.writeBytes(out.readAllBytes());
                         } catch (IOException ex) {
                             throw new RuntimeException(ex);
                         }
